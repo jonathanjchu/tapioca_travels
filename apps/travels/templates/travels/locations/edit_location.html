@@ -1,0 +1,42 @@
+{% extends "travels/location_base.html" %}
+
+{% block location_content %}
+
+<div class="row">
+    <div class="col">
+        <form action="/travels/{{trip.id}}/locations/{{ loc.id }}/edit/process" method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="name">Name (required):</label>
+                <input class="form-control" type="text" name="name" id="name" value="{{ loc.name }}" />
+            </div>
+            <div class="form-group">
+                <label for="loc_type">Location Type (city, district, etc):</label>
+                <input class="form-control" type="text" name="loc_type" id="loc_type" value="{{ loc.location_type }}" />
+            </div>
+            <div class="form-group">
+                <label for="fees">Fees:</label>
+                $ <input class="form-control" type="number" name="fees" id="fees" step="0.01" value="{{ loc.fees }}" />
+            </div>
+            <div class="form-group">
+                <label for="start_time">Start Time:</label>
+                <input class="form-control" type="date" name="start_time" id="start_time" value="{{ loc.start_time }}" />
+            </div>
+            <div class="form-group">
+                <label for="end_time">End Time:</label>
+                <input class="form-control" type="date" name="end_time" id="end_time" value="{{ loc.end_time }}" />
+            </div>
+            <div class="form-group">
+                <label for="info">Information:</label>
+                <textarea class="form-control" name="info" id="info">{{ loc.info }}</textarea>
+            </div>
+            {% for msg in messages %}
+                <p>{{ msg }}</p>
+            {% endfor %}
+
+            <input type="submit" value="Save Changes" class="btn" />
+        </form>
+    </div>
+</div>
+
+{% endblock %}

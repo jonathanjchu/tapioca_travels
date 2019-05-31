@@ -88,28 +88,6 @@ class LocationPicture(models.Model):
 
 
 
-class Transportation(models.Model):
-    mode = models.IntegerField(choices=TRANSPORTATION_MODE)
-    company_name = models.CharField(max_length=32)
-    price = models.FloatField()
-    origin = models.CharField(max_length=64)
-    destination = models.CharField(max_length=64)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-
-
-
-class Accomodations(models.Model):
-    business_name = models.CharField(max_length=32)
-    accomodation_type = models.IntegerField(choices=ACCOMODATION_TYPE)
-    address = models.CharField(max_length=255, blank=True)
-    price_per_night =  models.FloatField(default=0)
-    check_in = models.DateTimeField()
-    check_out = models.DateTimeField()
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-
-
 class Trip(models.Model):
     name = models.CharField(max_length=64)
     start_date = models.DateField()
@@ -120,7 +98,6 @@ class Trip(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     itinerary = models.ManyToManyField(Location, "part_of_trip")
-    transportation = models.ForeignKey(Transportation, models.CASCADE, "transportation_for", blank=True, null=True)
     companions = models.ManyToManyField(User, "going_on_trip")
     objects = TripManager()
 
@@ -140,3 +117,29 @@ class TripJoinRequest(models.Model):
         return f"<TripJoinRequest objects: {self.requested_by.username} wants to join {self.trip.id}>"
 
 
+
+
+class Accomodations(models.Model):
+    business_name = models.CharField(max_length=32)
+    accomodation_type = models.IntegerField(choices=ACCOMODATION_TYPE)
+    address = models.CharField(max_length=255, blank=True)
+    price_per_night =  models.FloatField(default=0)
+    check_in = models.DateTimeField(blank=True, null=True)
+    check_out = models.DateTimeField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    added_by = models.ForeignKey(User, models.CASCADE, "accomodations_added")
+    trip = models.ForeignKey(Trip, models.CASCADE, "accomodations")
+
+
+    
+class Transportation(models.Model):
+    mode = models.IntegerField(choices=TRANSPORTATION_MODE)
+    company_name = models.CharField(max_length=32)
+    price = models.FloatField()
+    origin = models.CharField(max_length=64)
+    destination = models.CharField(max_length=64)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    added_by = models.ForeignKey(User, models.CASCADE, "transportation_added")
+    trip = models.ForeignKey(Trip, models.CASCADE, "transportations")

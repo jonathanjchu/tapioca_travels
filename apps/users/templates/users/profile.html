@@ -25,6 +25,8 @@
             <br />
             <a href="/users/avatars">Upload New Profile Picture</a>
             {% else %}
+            <img src="{{ MEDIA_URL }}avatars/default.png" alt="profile picture" class="avatar" />
+            <br />
             <a href="/users/avatars">Upload Profile Picture</a>
             {% endif %}
         </p>

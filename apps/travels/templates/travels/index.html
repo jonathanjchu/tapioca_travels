@@ -16,6 +16,9 @@
                         <th>
                             End Date
                         </th>
+                        <th>
+                            Trip Organizer
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -28,6 +31,7 @@
                         </td>
                         <td>{{ trip.start_date }}</td>
                         <td>{{ trip.end_date }}</td>
+                        <td>{{ trip.created_by.username }}</td>
                     </tr>
                     {% endfor %}
                 </tbody>

@@ -10,8 +10,8 @@ urlpatterns = [
     path('edit/process', views.process_edit_trip),
     path('<int:trip_id>/locations/new', views.new_location),
     path('<int:trip_id>/locations/new/process', views.process_new_location),
-    path('<int:trip_id>/locations/edit/<int:loc_id>', views.edit_location),
-    path('<int:trip_id>/locations/edit/<int:loc_id>/process', views.process_edit_location),
+    path('<int:trip_id>/locations/<int:loc_id>/edit', views.edit_location),
+    path('<int:trip_id>/locations/<int:loc_id>/edit/process', views.process_edit_location),
     path('<int:trip_id>/locations/delete/<int:loc_id>', views.delete_location),
     # path('trips/<int:trip_id>/locations/<int:loc_id>', views.view_location),
     # path('trips/<int:trip_id>/locations/<int:loc_id>', views.view_child_location),
@@ -23,9 +23,10 @@ urlpatterns = [
         views.view_location),
 
     path('<int:trip_id>/accomodations/new', views.new_accomodations),
+    #/travels/trips/{{ trip.id }}/accomodations/new/process
+    path('<int:trip_id>/accomodations/new/process', views.process_new_accomodations),
     path('<int:trip_id>/locations/<int:loc_id>/pictures/add', views.add_location_picture),
     path('<int:trip_id>/locations/<int:loc_id>/pictures/add/process', views.process_add_location_picture),
-    #http://localhost:8000/travels/trips/7/join
     path('<int:trip_id>/join/request', views.request_join_trip),
     path('<int:trip_id>/join/<int:req_id>/accept', views.accept_join_request),
     path('<int:trip_id>/join/<int:req_id>/reject', views.reject_join_request),

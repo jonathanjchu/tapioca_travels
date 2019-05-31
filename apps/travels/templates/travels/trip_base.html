@@ -1,18 +1,10 @@
 {% extends "base.html" %}
-    
+
 
 {% block content %}
 {% if trip %}
 
-<div class="bread_crumbs">
-        <a href="/travels/{{ trip.id }}">
-            {{ trip.name }}
-        </a>
-        >
-        {% for bc in bread_crumbs %}
-        <a href="/travels/{{ trip.id }}/locations/{{ bc.id }}">{{ bc.name }}</a> >
-        {% endfor %}
-    </div>
+
 <div class="row">
     <div class="col">
         <h2>{{ trip.name }}</h2>
@@ -21,6 +13,6 @@
 </div>
 
 {% endif %}
-    {% block trip_content %}
-    {% endblock %}
+{% block trip_content %}
+{% endblock %}
 {% endblock %}

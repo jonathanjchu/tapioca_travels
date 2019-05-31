@@ -45,7 +45,10 @@
                     <td>{{ loc.location_type }}</td>
                     <td>{{ loc.info }}</td>
                     <td class="action">
-                        Edit | Delete
+                        <a href="/travels/{{ trip.id }}/locations/{{ loc.id }}/edit">
+                            Edit 
+                        </a>
+                        | Delete
                     </td>
                 </tr>
                 {% endfor %}

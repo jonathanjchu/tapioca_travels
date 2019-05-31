@@ -65,11 +65,13 @@ def view_trip(request, trip_id):
     user = User.objects.get(id=request.session['id'])
     trip = Trip.objects.get(id=trip_id)
     treqs = TripJoinRequest.objects.filter(trip=trip, is_pending=True)
+    accomodations = Accomodations.objects.filter(trip=trip)
 
     context = {
         'trip': trip,
         'user': user,
         'join_requests': treqs,
+        'accomodations': accomodations,
     }
     return render(request, "travels/trips/view_trip.html", context)
 
@@ -135,8 +137,11 @@ def process_new_location(request, trip_id):
     return redirect(f"/travels/{trip_id}/locations/new")
 
 
-def edit_location(request):
-    return redirect("/")
+def edit_location(request, trip_id, loc_id):
+    form = LocationForm()
+    loc = Location.objects.get(id=loc_id)
+    trip = Trip.objects.get(id=trip_id)
+    return render(request, "travels/locations/edit_location.html", { 'form': form, 'loc': loc, 'trip': trip })
 
 
 def process_edit_location(request):
@@ -188,30 +193,52 @@ def delete_location(request, trip_id, loc_id):
 
 def bread_crumbs(loc_id):
     loc = Location.objects.get(id=loc_id)
-    parents = []
+    ancestors = []
 
     while loc.parent_location != None:
-        loc = Location.objects.get(id=loc.parent_location.id)
-        parents.insert(0, loc)
+        loc = loc.parent_location
+        ancestors.insert(0, loc)
 
-    return parents
+    return ancestors
 
+'''
+ACCOMODATIONS
+'''
 
 def new_accomodations(request, trip_id):
-
-    aform = AccomodationForm()
+    # aform = AccomodationForm()
+    trip = Trip.objects.get(id=trip_id)
+    acom_types = ACCOMODATION_TYPE
 
     context = {
-        'acco_form': aform,
+        # 'acco_form': aform,
+        'trip': trip,
+        'accom_types': ACCOMODATION_TYPE,
     }
 
     return render(request, "travels/accomodations/new_accomodations.html", context)
 
 
+def process_new_accomodations(request, trip_id):
+    trip = Trip.objects.get(id=trip_id)
+
+    if request.method == "POST":
+        print(request.POST['check_out'])
+        
+        Accomodations.objects.create(business_name=request.POST['name'],
+                                accomodation_type=request.POST['accom_type'],
+                                address=request.POST['address'],
+                                price_per_night=float(request.POST['price']),
+                                check_in=request.POST['check_in'] or None,
+                                check_out=request.POST['check_out'] or None,
+                                trip=trip)
+
+        return redirect(f"/travels/{trip_id}")
+    
+    return redirect(f"{trip_id}/accomodations/new/process")
+
 def add_location_picture(request, trip_id, loc_id):
-
     location = Location.objects.get(id=loc_id)
-
     form = UploadPictureForm()
 
     context = {
