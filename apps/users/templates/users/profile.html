@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col">
+        <h1>Hello, {{ user.first_name }}!</h1>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        {% for msg in messages %}
+        {% if 'info' == msg.tags %}
+        <p class="{{ msg.tags }}">
+            {{ msg }}
+        </p>
+        {% endif %}
+        {% endfor %}
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <p>
+            {% if avatar %}
+            <img src="{{ MEDIA_URL }}avatars/{{ avatar }}" alt="profile picture" class="avatar" />
+            <br />
+            <a href="/users/avatars">Upload New Profile Picture</a>
+            {% else %}
+            <a href="/users/avatars">Upload Profile Picture</a>
+            {% endif %}
+        </p>
+        <p>
+            <a href="/users/friends">View Friends</a>
+        </p>
+
+    </div>
+    <div class="col">
+        <h3>Your Next Trip:</h3>
+        <a href="/travels/new">Add New Trip</a>
+        {% for freq in friend_requests %}
+        <div>{{ freq.sender.username }} sent you a request.
+            <a href="/users/friends/accept/{{ freq.id }}">Accept</a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}

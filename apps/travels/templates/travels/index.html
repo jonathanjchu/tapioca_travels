@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="row">
+        <div class="col">
+            <h2>Upcoming Trips</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>
+                            Trip Name
+                        </th>
+                        <th>
+                            Start Date
+                        </th>
+                        <th>
+                            End Date
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for trip in trips.all %}
+                    <tr>
+                        <td>
+                            <a href="/travels/{{ trip.id }}">
+                                {{ trip.name }}
+                            </a>
+                        </td>
+                        <td>{{ trip.start_date }}</td>
+                        <td>{{ trip.end_date }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <a href="/travels/new">Add New Trip</a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <h2>Past Trips</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>
+                            Trip Name
+                        </th>
+                        <th>
+                            Start Date
+                        </th>
+                        <th>
+                            End Date
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for ptrip in past_trips %}
+                        <tr>
+                            <td>{{ ptrip.name }}</td>
+                            <td>{{ ptrip.start_date }}</td>
+                            <td>{{ ptrip.end_date }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

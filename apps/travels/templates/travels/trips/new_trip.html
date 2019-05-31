@@ -1,0 +1,29 @@
+{% extends "travels/trip_base.html" %}
+
+{% block trip_content %}
+    <div class="row">
+        <div class="col">
+            <form action="/travels/new/process" method="POST">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="name">Name your trip:</label>
+                    <input class="form-control" type="text" name="name" id="name" />
+                </div>
+                <div class="form-group">
+                    <label for="trip_start">Start Date:</label>
+                    <input class="form-control" type="date" name="trip_start" id="trip_start" />
+                </div>
+                <div class="form-group">
+                    <label for="trip_end">End Date:</label>
+                    <input class="form-control" type="date" name="trip_end" id="trip_end" />
+                </div>
+                <div class="form-group">
+                    <label for="is_private">Make trip private:</label>
+                    <input class="form-check" type="checkbox" name="is_private" id="is_private" />
+                </div>
+                <input type="submit" value="Create New Trip" class="btn" />
+            </form>
+        </div>
+    </div>
+
+{% endblock %}

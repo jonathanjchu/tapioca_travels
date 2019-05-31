@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col">
+        <h3>{{ friend.first_name }} {{ friend.last_name }}</h3>
+        <h3>Upcoming Trips</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Trip Name</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Join?</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for t in trips.all %}
+                <tr>
+                    <td>{{ t.name }}</td>
+                    <td>{{ t.start_date }}</td>
+                    <td>{{ t.end_date }}</td>
+                    <td>
+                        {% if user in t.companions %}
+
+                        {% else %}
+                            <a href="/travels/{{ t.id }}/join/request">Join?</a>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

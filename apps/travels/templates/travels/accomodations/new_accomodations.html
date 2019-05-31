@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="row">
+        <div class="col">
+            <form action="/travels/trips/new/process" method="POST">
+                {% csrf_token %}
+                {{ acco_form }}
+                <input type="submit" value="Create New Trip" class="btn" />
+            </form>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,19 @@
+{% extends "travels/location_base.html" %}
+
+{% block location_content %}
+        <div class="row">
+            <div class="col">
+                <h2>{{ trip.name }}</h2>
+                <form action="/travels/{{ trip_id }}/locations/{{location.id}}/pictures/add/process"
+                        method="POST"
+                        enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ form }}
+                    {% for msg in messages %}
+                        <p>{{ msg }}</p>
+                    {% endfor %}
+                    <input type="submit" value="Add Picture" class="btn" />
+                </form>
+            </div>
+        </div>
+{% endblock %}

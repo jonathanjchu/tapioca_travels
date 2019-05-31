@@ -1,0 +1,60 @@
+{% extends "travels/location_base.html" %}
+
+{% block location_content %}
+
+<div class="row">
+    <div class="col">
+        <h2>{{ location.name }}</h2>
+        <p>{{ location.info }}</p>
+    </div>
+    <div class="col">
+        <a href="/travels/{{ trip.id }}/locations/{{ location.id }}/pictures/add">
+            Add a picture
+        </a>
+        <br />
+        {% if location.picture.first %}
+        <img src="{{ MEDIA_URL }}locations/{{ location.picture.first.image_name }}" alt="location picture"
+            class="location_img" />
+        {% endif %}
+    </div>
+</div>
+{% if location.child_locations.all %}
+<div class="row">
+    <div class="col">
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Start Time</th>
+                    <th>End Time</th>
+                    <th>Type</th>
+                    <th>Information</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for loc in location.child_locations.all %}
+                <tr>
+                    <td class="name">
+                        <a href="/travels/{{ trip.id }}/locations/{{ loc.id }}">
+                            {{ loc.name }}
+                        </a>
+                    </td>
+                    <td>{{ loc.start_time }}</td>
+                    <td>{{ loc.end_time }}</td>
+                    <td>{{ loc.location_type }}</td>
+                    <td>{{ loc.info }}</td>
+                    <td class="action">
+                        Edit | Delete
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endif %}
+<div class="row">
+    <a href="/travels/{{ trip.id}}/locations/{{ location.id }}/new">Add New Location</a>
+</div>
+{% endblock %}

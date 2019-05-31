@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Tapioca Travels</title>
+    {% load static %}
+    <link href="{% static 'travels/css/tap.css' %}" rel="stylesheet" />
+    {% block head %}
+    {% endblock %}
+</head>
+
+<body>
+    <nav class="navbar">
+            <h1 class="navbar-brand">
+                <a href="/travels">
+                    Tapioca Travels
+                </a>
+            </h1>
+            <ul class="nav-list">
+                {% if user %}
+                <li class="nav-item">
+                    <a href="/users/profiles">
+                    {% if user.avatar.first %}
+                        <img src="{{ MEDIA_URL }}avatars/{{ user.avatar.first.image_name }}"
+                            alt="profile picture"
+                            class="avatar" />
+                    {% else %}
+                        <img src="{{ MEDIA_URL }}avatars/default.png"
+                            alt="profile picture"
+                            class="avatar" />
+                    {% endif %}
+                    </a>
+                </li>
+                {% endif %}
+                <li class="nav-item">
+                    <a href="/travels">My Trips</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/travels/new">Create New Trip</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/logout">Logout</a>
+                </li>
+            </ul>
+        </nav>
+
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                {% for msg in messages %}
+                {% if 'info' == msg.tags %}
+                <p class="{{ msg.tags }}">
+                    {{ msg }}
+                </p>
+                {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+        
+        {% block content %}
+        {% endblock %}
+    </div>
+
+</body>
+
+</html>

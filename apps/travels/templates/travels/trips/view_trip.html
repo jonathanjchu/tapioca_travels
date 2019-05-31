@@ -1,0 +1,103 @@
+{% extends "travels/trip_base.html" %}
+
+{% block head %}
+{% load static %}
+<link href="{% static 'users/css/friends.css' %}" rel="stylesheet" />
+{% endblock %}
+
+{% block content %}
+{% if join_requests %}
+<div class="row">
+    <div class="col">
+        <h2>Join Requests</h2>
+        {% for jreq in join_requests %}
+        <div>
+            {{ jreq.requested_by.username }} wants to join this trip.
+            <a href="/travels/{{ trip.id }}/join/{{ jreq.id }}/accept">Accept</a> /
+            <a href="/travels/{{ trip.id }}/join/{{ jreq.id }}/reject">Decline</a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+<div class="row">
+    <div class="col">
+        <h2>Transportation</h2>
+        <table>
+
+        </table>
+    </div>
+    <div class="col">
+        <h2>Accomodations</h2>
+        <a href="/travels/{{ trip.id }}/accomodations/new">Add New Accomodation</a>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <h2>Itinerary</h2>
+        {% if trip.itinerary.all %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Start Time</th>
+                    <th>End Time</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for loc in trip.itinerary.all %}
+                <tr>
+                    <td>
+                        <a href="/travels/{{ trip.id }}/locations/{{ loc.id }}">
+                            {{ loc.name }}
+                        </a>
+                    </td>
+                    <td>{{ loc.start_time }}</td>
+                    <td>{{ loc.end_time }}</td>
+                    <td>{{ loc.desc }}</td>
+                </tr>
+                <tr>
+                    <td colspan="4">
+                        {% for cloc in loc.child_locations.all %}
+                        <a href="/travels/{{ trip.id }}/locations/{{ cloc.id }}">
+                            {{ cloc.name }}
+                        </a><br />
+                        {% endfor %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% endif %}
+    </div>
+</div>
+<div class="row">
+    <a href="/travels/{{ trip.id }}/locations/new">Add New Location</a>
+</div>
+<div class="row">
+    <div class="col">
+        <h2>Friends Joining this Trip</h2>
+        {% for friend in trip.companions.all %}
+        <div class="friend">
+            <a href="/users/friends/{{friend.id}}">
+                {% if friend.avatar.all %}
+                <img src="{{ MEDIA_URL }}avatars/{{ friend.avatar.all.first.image_name }}" alt="profile picture"
+                    class="avatar" />
+                {% else %}
+                <!-- show default avatar -->
+                <img src="{{ MEDIA_URL }}avatars/default.png" alt="profile picture" class="avatar" />
+                {% endif %}
+                <p class="text">
+                    {{ friend.first_name }} {{ friend.last_name }}<br />
+                    ({{friend.username}})
+                </p>
+            </a>
+        </div>
+        {% empty %}
+        <p>None</p>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}

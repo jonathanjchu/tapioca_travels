@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+
+{% block head %}
+{% load static %}
+<link href="{% static 'users/css/friends.css' %}" rel="stylesheet" />
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col">
+        <h3>Friends</h3>
+        <!-- DISPLAY LIST OF FRIENDS -->
+        {% for friend in user.friends.all %}
+
+        <div class="friend">
+            <a href="/users/friends/{{ friend.id }}">
+                {% if friend.avatar.all %}
+                <img src="{{ MEDIA_URL }}avatars/{{ friend.avatar.all.first.image_name }}" alt="profile picture"
+                    class="avatar" />
+                {% else %}
+                <img src="{{ MEDIA_URL }}avatars/default.png" alt="profile picture" class="avatar" />
+                {% endif %}
+                <p class="text">
+                    {{ friend.first_name }} {{ friend.last_name }}<br />
+                    ({{ friend.username }})
+                </p>
+            </a>
+        </div>
+
+        {% empty %}
+        <h3>No Friends</h3>
+        {% endfor %}
+    </div>
+</div>
+<!-- REQUESTS WAITING FOR USER RESPONSE -->
+{% if pending_response %}
+<div class="row">
+    <div class="col">
+        <h3>Friend Requests waiting for your response</h3>
+        {% for preq in pending_response.all %}
+        <div class="friend">
+            {% if preq.sender.avatar.all %}
+            <img src="{{ MEDIA_URL }}avatars/{{ preq.sender.avatar.all.first.image_name }}" alt="profile picture"
+                class="avatar" />
+            {% else %}
+            <!-- show default avatar -->
+            <img src="{{ MEDIA_URL }}avatars/default.png" alt="profile picture" class="avatar" />
+            {% endif %}
+            <p class="text">
+                {{ preq.sender.first_name }} {{ preq.sender.last_name }}<br />
+                ({{preq.sender.username}})
+            </p>
+            <a href="/users/friends/accept/{{ preq.id }}" class="btn">Accept</a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+{% if requested_users %}
+<!-- PENDING FRIEND REQUESTS -->
+<div class="row">
+    <div class="col">
+        <h3>Pending Friend Requests</h3>
+        {% for freq in requested_users.all %}
+        <div class="friend">
+            {% if freq.recipient.avatar.all %}
+            <img src="{{ MEDIA_URL }}avatars/{{ freq.recipient.avatar.all.first.image_name }}" alt="profile picture"
+                class="avatar" />
+            {% else %}
+            <!-- show default avatar -->
+            <img src="{{ MEDIA_URL }}avatars/default.png" alt="profile picture" class="avatar" />
+            {% endif %}
+            <p class="text">
+                {{ freq.recipient.username }}
+            </p>
+            <a href="/users/friends/cancel/{{ freq.id }}" class="btn">Cancel</a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+<div class="row">
+    <div class="col">
+        <h3>Other Users</h3>
+        {% for person in other_users %}
+        <div class="friend">
+            <!-- DISPLAY LIST OF ALL OTHER USERS -->
+            {% if person.avatar.all %}
+            <img src="{{ MEDIA_URL }}avatars/{{ person.avatar.all.first.image_name }}" alt="profile picture"
+                class="avatar" />
+            {% else %}
+            <!-- show default avatar -->
+            <img src="{{ MEDIA_URL }}avatars/default.png" alt="profile picture" class="avatar" />
+            {% endif %}
+            <p class="text">{{ person.username }}</p>
+            <!-- friend request button -->
+            <a href="/users/friends/{{ person.id }}/request" class="btn">Add Friend</a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

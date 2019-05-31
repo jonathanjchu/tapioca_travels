@@ -1,0 +1,16 @@
+
+
+<div class="friend">
+    {% if friend.avatar.all %}
+    <img src="{{ MEDIA_URL }}avatars/{{ friend.avatar.all.first.image_name }}" alt="profile picture"
+        class="avatar" />
+    {% else %}
+    <!-- show default avatar -->
+    <img src="{{ MEDIA_URL }}avatars/default.png" alt="profile picture" class="avatar" />
+    {% endif %}
+    <p class="text">
+        {{ preq.sender.first_name }} {{ preq.sender.last_name }}<br />
+        ({{preq.sender.username}})
+    </p>
+    <a href="/users/friends/accept/{{ preq.id }}" class="btn">Accept</a>
+</div>

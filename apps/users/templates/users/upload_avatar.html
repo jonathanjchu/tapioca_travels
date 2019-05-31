@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col">
+        <form action="/users/avatars/process" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ avatar_form }}
+            <input type="submit" value="Upload" class="btn" />
+        </form>
+    </div>
+</div>
+{% endblock %}

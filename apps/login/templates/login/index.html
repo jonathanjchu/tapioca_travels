@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Login & Registration</title>
+    <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"> -->
+    {% load static %}
+    <link href="{% static 'travels/css/tap.css' %}" rel="stylesheet" />
+</head>
+
+<body>
+    <nav class="navbar">
+        <h1 class="navbar-brand">
+            Tapioca Travels
+        </h1>
+    </nav>
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <h2>Registration</h2>
+                <form class="form mt-3" action="/users/create" method="POST">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="first_name">First Name:</label>
+                        {% for msg in messages %}
+                            {% if 'first_name error' == msg.tags %}
+                            <p class="{{ msg.tags }}">
+                                {{ msg }}
+                            </p>
+                            {% endif %}
+                        {% endfor %}
+                        <input class="form-control" type="text" name="first_name" id="first_name" />
+                    </div>
+                    <div class="form-group">
+                        <label for="last_name">Last Name:</label>
+                        {% for msg in messages %}
+                            {% if 'last_name error' == msg.tags %}
+                            <p class="{{ msg.tags }}">
+                                {{ msg }}
+                            </p>
+                            {% endif %}
+                        {% endfor %}
+                        <input class="form-control" type="text" name="last_name" id="last_name" />
+                    </div>
+                    <div class="form-group">
+                        <label for="username">Username:</label>
+                        {% for msg in messages %}
+                            {% if 'username error' == msg.tags %}
+                                <p class="{{ msg.tags }}">
+                                    {{ msg }}
+                                </p>
+                            {% endif %}
+                        {% endfor %}
+                        <input class="form-control" type="text" name="username" id="username" />
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email:</label>
+                        {% for msg in messages %}
+                            {% if 'email error' == msg.tags %}
+                            <p class="{{ msg.tags }}">
+                                {{ msg }}
+                            </p>
+                            {% endif %}
+                        {% endfor %}
+                        <input class="form-control" type="text" name="email" id="email" />
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password:</label>
+                        {% for msg in messages %}
+                            {% if 'password error' == msg.tags %}
+                            <p class="{{ msg.tags }}">
+                                {{ msg }}
+                            </p>
+                            {% endif %}
+                        {% endfor %}
+                        <input class="form-control" type="password" name="password" id="password" />
+                    </div>
+                    <div class="form-group">
+                        <label for="confirm_password">Confirm Password:</label>
+                        {% for msg in messages %}
+                            {% if 'confirm_password error' == msg.tags %}
+                            <p class="{{ msg.tags }}">
+                                {{ msg }}
+                            </p>
+                            {% endif %}
+                        {% endfor %}
+                        <input class="form-control" type="password" name="confirm_password" id="confirm_password" />
+                    </div>
+                    <input class="btn" type="submit" value="Register" />
+                </form>
+            </div>
+            <div class="col">
+                <h2>Login</h2>
+                <form class="form mt-3" action="/login" method="POST">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="login_email">Email:</label>
+                        <input class="form-control" type="text" name="email_address" id="login_email" />
+                    </div>
+                    <div class="form-group">
+                        <label for="login_pw">Password:</label>
+                        <input class="form-control" type="password" name="pwd" id="login_pw" />
+                    </div>
+                    {% for msg in messages %}
+                        {% if 'login error' == msg.tags %}
+                        <p class="{{ msg.tags }}">
+                            {{ msg }}
+                        </p>
+                        {% endif %}
+                    {% endfor %}
+                    <input class="btn" type="submit" value="Login" />
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script> -->
+</body>
+
+</html>
