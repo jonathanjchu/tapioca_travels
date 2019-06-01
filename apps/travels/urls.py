@@ -16,7 +16,7 @@ urlpatterns = [
     # path('trips/<int:trip_id>/locations/<int:loc_id>', views.view_location),
     # path('trips/<int:trip_id>/locations/<int:loc_id>', views.view_child_location),
     re_path(r'(?P<trip_id>[0-9]+)/(locations/(?P<loc_id>[0-9]+)/)*new$',
-        views.new_child_location),
+        views.new_location),
     re_path(r'(?P<trip_id>[0-9]+)/(locations/(?P<loc_id>[0-9]+)/)*new/process$',
         views.process_new_child_location),
     re_path(r'(?P<trip_id>[0-9]+)/(locations/[0-9]+/)*locations/(?P<loc_id>[0-9]+)$',
@@ -25,6 +25,8 @@ urlpatterns = [
     path('<int:trip_id>/accomodations/new', views.new_accomodations),
     #/travels/trips/{{ trip.id }}/accomodations/new/process
     path('<int:trip_id>/accomodations/new/process', views.process_new_accomodations),
+    path('<int:trip_id>/transportation/new', views.new_transportation),
+    path('<int:trip_id>/transportation/new/process', views.process_new_transportation),
     path('<int:trip_id>/locations/<int:loc_id>/pictures/add', views.add_location_picture),
     path('<int:trip_id>/locations/<int:loc_id>/pictures/add/process', views.process_add_location_picture),
     path('<int:trip_id>/join/request', views.request_join_trip),

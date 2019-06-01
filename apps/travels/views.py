@@ -66,12 +66,14 @@ def view_trip(request, trip_id):
     trip = Trip.objects.get(id=trip_id)
     treqs = TripJoinRequest.objects.filter(trip=trip, is_pending=True)
     accomodations = Accomodations.objects.filter(trip=trip)
+    trans = Transportation.objects.filter(trip=trip)
 
     context = {
         'trip': trip,
         'user': user,
         'join_requests': treqs,
         'accomodations': accomodations,
+        'trans': trans,
     }
     return render(request, "travels/trips/view_trip.html", context)
 
@@ -86,27 +88,58 @@ def process_edit_trip(request, trip_id):
 LOCATIONS
 '''
 
-def new_location(request, trip_id):
-    user = User.objects.get(id=request.session['id'])
+def view_location(request, trip_id, loc_id):
+    ancestry = bread_crumbs(loc_id)
     trip = Trip.objects.get(id=trip_id)
+    loc = Location.objects.get(id=loc_id)
+    user = get_user(request)
+
     context = {
+        'location': loc,
+        'bread_crumbs': ancestry,
         'trip': trip,
         'user': user,
-        'action': f"/travels/{trip.id}/new/process",
     }
-    return render(request, "travels/locations/new_location.html", context)
+    return render(request, "travels/locations/view_location.html", context)
+
+# def new_location(request, trip_id):
+#     user = User.objects.get(id=request.session['id'])
+#     parent_locations = Location.objects.filter(id=loc_id)
+#     trip = Trip.objects.get(id=trip_id)
+
+#     if parent_locations:
+#         parent_location = parent_locations.first()
+#     else:
+#         parent_location = None
+
+#     context = {
+#         'trip': trip,
+#         'parent': parent_location,
+#         'user': user,
+#         'action': f"/travels/{trip.id}/locations/{loc_id}/new/process",
+#     }
+
+#     return render(request, "travels/locations/new_location.html", context)
 
 
-def new_child_location(request, trip_id, loc_id):
+def new_location(request, trip_id, loc_id=None):
     user = User.objects.get(id=request.session['id'])
-    parent_location = Location.objects.get(id=loc_id)
     trip = Trip.objects.get(id=trip_id)
+
+    parent_location = None
+    action = f"/travels/{trip.id}/locations/new/process"
+    if loc_id:
+        parent_locations = Location.objects.filter(id=loc_id)
+
+        if parent_locations:
+            parent_location = parent_locations.first()
+            action = f"/travels/{trip.id}/locations/{loc_id}/new/process"
 
     context = {
         'trip': trip,
         'parent': parent_location,
         'user': user,
-        'action': f"/travels/{trip.id}/locations/{loc_id}/new/process",
+        'action': action,
     }
 
     return render(request, "travels/locations/new_location.html", context)
@@ -138,14 +171,35 @@ def process_new_location(request, trip_id):
 
 
 def edit_location(request, trip_id, loc_id):
-    form = LocationForm()
+    user = get_user(request)
+    # form = LocationForm()
     loc = Location.objects.get(id=loc_id)
     trip = Trip.objects.get(id=trip_id)
-    return render(request, "travels/locations/edit_location.html", { 'form': form, 'loc': loc, 'trip': trip })
+
+    context = {
+        'loc': loc,
+        'trip': trip ,
+        'user': user,
+    }
+
+    return render(request, "travels/locations/edit_location.html", context)
 
 
-def process_edit_location(request):
-    return redirect("/")
+def process_edit_location(request, trip_id, loc_id):
+    if request.method == "POST":
+        loc = Location.objects.get(id=loc_id)
+        loc.name = request.POST['name']
+        loc.location_type = request.POST['loc_type']
+        loc.info = request.POST['info']
+        loc.start_time = request.POST['start_time'] or None
+        loc.end_time = request.POST['end_time'] or None
+        loc.fees = float(request.POST['fees'] or 0.0)
+        loc.save()
+
+        messages.info(request, "Updates Saved")
+        return redirect(f"/travels/{trip_id}/locations/{loc_id}")
+    
+    return redirect(f"/travels/{trip_id}/locations/{loc_id}/edit")
 
 
 def process_new_child_location(request, trip_id, loc_id):
@@ -171,22 +225,8 @@ def process_new_child_location(request, trip_id, loc_id):
     return redirect(f"/travels/{trip_id}/locations/{loc_id}/new")
 
 
-def view_location(request, trip_id, loc_id):
-    ancestry = bread_crumbs(loc_id)
-    trip = Trip.objects.get(id=trip_id)
-    loc = Location.objects.get(id=loc_id)
-    user = User.objects.get(id=request.session['id'])
-
-    context = {
-        'location': loc,
-        'bread_crumbs': ancestry,
-        'trip': trip,
-        'user': user,
-    }
-    return render(request, "travels/locations/view_location.html", context)
-
-
 def delete_location(request, trip_id, loc_id):
+    user = get_user()
 
     return redirect(f"/travels/{trip_id}")
 
@@ -221,21 +261,60 @@ def new_accomodations(request, trip_id):
 
 def process_new_accomodations(request, trip_id):
     trip = Trip.objects.get(id=trip_id)
+    user = User.objects.get(id=request.session['id'])
 
     if request.method == "POST":
-        print(request.POST['check_out'])
+        print("price: "+request.POST['price'])
         
         Accomodations.objects.create(business_name=request.POST['name'],
                                 accomodation_type=request.POST['accom_type'],
                                 address=request.POST['address'],
-                                price_per_night=float(request.POST['price']),
+                                price_per_night=float(request.POST['price'] or 0),
                                 check_in=request.POST['check_in'] or None,
                                 check_out=request.POST['check_out'] or None,
+                                added_by=user,
                                 trip=trip)
 
         return redirect(f"/travels/{trip_id}")
     
     return redirect(f"{trip_id}/accomodations/new/process")
+
+'''
+TRANSPORTATION
+'''
+
+def new_transportation(request, trip_id):
+    user = User.objects.get(id=request.session['id'])
+    trip = Trip.objects.get(id=trip_id)
+    
+    context = {
+        'trip': trip,
+        'trans_modes': TRANSPORTATION_MODE,
+        'user': user,
+    }
+
+    return render(request, "travels/transportation/new_transportation.html", context)
+
+
+def process_new_transportation(request, trip_id):
+    if request.method == "POST":
+        user = User.objects.get(id=request.session['id'])
+        trip = Trip.objects.get(id=trip_id)
+
+        Transportation.objects.create(mode=request.POST['trans_type'],
+                                        company_name=request.POST['name'],
+                                        price=float(request.POST['price'] or 0.0),
+                                        origin=request.POST['origin'],
+                                        destination=request.POST['destination'],
+                                        departure_time=request.POST['departure'] or None,
+                                        arrival_time=request.POST['arrival'] or None,
+                                        added_by=user,
+                                        trip=trip)
+        
+
+        return redirect(f"/travels/{trip_id}")
+    
+    return redirect(f"/travels/{trip_id}/transportation/new")
 
 def add_location_picture(request, trip_id, loc_id):
     location = Location.objects.get(id=loc_id)
@@ -313,3 +392,6 @@ def reject_join_request(request, trip_id, req_id):
     return redirect(f"/travels/{trip_id}")
 
 
+def get_user(request):
+    user = User.objects.get(id=request.session['id'])
+    return user

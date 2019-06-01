@@ -27,13 +27,46 @@
 </div>
 <div class="row">
     <div class="col">
-        <h2>Transportation</h2>
-        <table>
-
-        </table>
+        <h2>{{ trip.name }}</h2>
+        <h3>({{ trip.start_date }} to {{ trip.end_date }})</h3>
     </div>
-    <div class="col">
+</div>
+<div class="row">
+    <div class="col-2">
+        <h2>Transportation</h2>
+        {% if trans %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Company Name</th>
+                    <th>Origin</th>
+                    <th>Destination</th>
+                    <th>Departure Time</th>
+                    <th>Arrival Time</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for tran in trans %}
+                    <tr>
+                        <td>{{ tran.company_name }}</td>
+                        <td>{{ tran.origin }}</td>
+                        <td>{{ tran.destination }}</td>
+                        <td>{{ tran.departure_time }}</td>
+                        <td>{{ tran.arrival_time }}</td>
+                        <td>Edit | Delete</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p>None</p>
+        {% endif %}
+        <a href="/travels/{{ trip.id }}/transportation/new">Add New Transportation</a>
+    </div>
+    <div class="col-2">
         <h2>Accomodations</h2>
+        {% if accomodations %}
         <table>
             <thead>
                 <tr>
@@ -58,6 +91,9 @@
                 {% endfor %}
             </tbody>
         </table>
+        {% else %}
+            <p>None</p>
+        {% endif %}
         <a href="/travels/{{ trip.id }}/accomodations/new">Add New Accomodation</a>
     </div>
 </div>
@@ -98,11 +134,11 @@
                 {% endfor %}
             </tbody>
         </table>
+        {% else %}
+            <p>No locations added yet</p>
         {% endif %}
+        <a href="/travels/{{ trip.id }}/locations/new">Add New Location</a>
     </div>
-</div>
-<div class="row">
-    <a href="/travels/{{ trip.id }}/locations/new">Add New Location</a>
 </div>
 <div class="row">
     <div class="col">

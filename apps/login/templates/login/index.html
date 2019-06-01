@@ -18,7 +18,7 @@
     </nav>
     <div class="container">
         <div class="row">
-            <div class="col">
+            <div class="col-2">
                 <h2>Registration</h2>
                 <form class="form mt-3" action="/users/create" method="POST">
                     {% csrf_token %}
@@ -91,7 +91,7 @@
                     <input class="btn" type="submit" value="Register" />
                 </form>
             </div>
-            <div class="col">
+            <div class="col-2">
                 <h2>Login</h2>
                 <form class="form mt-3" action="/login" method="POST">
                     {% csrf_token %}

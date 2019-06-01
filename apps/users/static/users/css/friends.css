@@ -2,6 +2,7 @@
 .friend {
     display: block;
     margin: 3px;
+    padding: 1px;
     border: 1px solid #805040;
     height: 60px;
     width: 320px;

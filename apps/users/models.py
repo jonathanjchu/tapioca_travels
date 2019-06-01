@@ -55,6 +55,7 @@ class User(models.Model):
     email = models.CharField(max_length=45)
     password = models.CharField(max_length=70)
     friends = models.ManyToManyField('self')
+    is_deleted = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     objects = UserManager()
@@ -66,6 +67,7 @@ class User(models.Model):
 class Avatar(models.Model):
     image_name = models.CharField(max_length=32, default="default.png")
     user = models.ForeignKey(User, models.CASCADE, "avatar")
+    is_deleted = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

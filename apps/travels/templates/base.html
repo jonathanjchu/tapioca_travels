@@ -46,17 +46,19 @@
         </nav>
 
     <div class="container">
+        {% if messages %}
         <div class="row">
             <div class="col">
                 {% for msg in messages %}
                 {% if 'info' == msg.tags %}
-                <p class="{{ msg.tags }}">
+                <p class="msg {{ msg.tags }}">
                     {{ msg }}
                 </p>
                 {% endif %}
                 {% endfor %}
             </div>
         </div>
+        {% endif %}
         
         {% block content %}
         {% endblock %}

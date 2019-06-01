@@ -5,6 +5,7 @@
 
 body {
     font-family: 'Segoe UI', Tahoma, Verdana, sans-serif;
+    background-color: #ddd;
 }
 
 .error {
@@ -72,6 +73,7 @@ a:link.btn, a:visited.btn {
     /* min-width: 800px; */
     width: 90%;
     padding: 6px 32px;
+    box-sizing: border-box;
 }
 
 .bread_crumbs {
@@ -80,17 +82,32 @@ a:link.btn, a:visited.btn {
 
 .row {
     width: 100%;
+    box-sizing: border-box;
 }
 
-.col {
+.col, .col-2 {
     display: inline-block;
     vertical-align: top;
     box-sizing: border-box;
-    margin: 12px;
-    width: auto;
-    /* width: 48%; */
+    margin: 3px;
+    background-color: #fff;
+    padding: 6px;
 }
 
+.col {
+    width: 100%;
+    min-width: 400px;
+}
+
+.col-2 {
+    width: 50%;
+    min-height: 380px;
+    min-width: 400px;
+}
+
+.col-2:nth-child(even) {
+    width: 49%;
+}
 
 .location_img {
     height: 320px;
@@ -128,7 +145,8 @@ td.name {
 } */
 
 form {
-    width: 400px;
+    width: 80%;
+    max-width: 380px;
 }
 
 .form-group {
@@ -136,14 +154,15 @@ form {
 }
 
 input[type=file], input[type=text], input[type=number], .form-control {
-    /* font-family: 'Segoe UI', Tahoma, Verdana, sans-serif; */
+    font-family: 'Segoe UI', Tahoma, Verdana, sans-serif;
     border: 2px solid #c4998b;
-    min-height: 32px;
+    min-height: 36px;
     border-radius: 6px;
     display: inline-block;
     width:100%;
     font-size: 16px;
     margin: 3px;
+    padding: 0 3px;
 }
 
 .form-check {

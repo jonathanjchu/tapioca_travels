@@ -4,24 +4,24 @@ from apps.users.models import *
 # Create your models here.
 
 TRANSPORTATION_MODE = (
-    (0, "Foot"),
+    (0, "Airplane"),
     (1, "Personal Car"),
     (2, "Bus"),
     (3, "Train"),
-    (4, "Airplane"),
+    (4, "Foot"),
     (5, "Subway"),
     (6, "Cab")
 )
 
 
 ACCOMODATION_TYPE = (
-    (0, "Private Home"),
-    (1, "Hotel"),
-    (2, "Hostel"),
-    (3, "Air BnB"),
-    (4, "Couchsurfing"),
-    (5, "Camping"),
-    (6, "Streets"),
+    (0, "Hotel"),
+    (1, "Hostel"),
+    (2, "Air BnB"),
+    (3, "Couchsurfing"),
+    (4, "Camping"),
+    (5, "Streets"),
+    (6, "Private Home")
 )
 
 
@@ -61,6 +61,7 @@ class Location(models.Model):
     start_time = models.DateTimeField(blank=True, null=True)
     end_time = models.DateTimeField(blank=True, null=True)
     fees = models.FloatField(default=0)
+    is_deleted = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     added_by_user = models.ForeignKey(User, models.CASCADE, "locations_added")
@@ -83,9 +84,9 @@ class LocationPicture(models.Model):
     image_name = models.CharField(max_length=64)
     picture_of = models.ForeignKey(Location, models.CASCADE, "picture")
     uploaded_by = models.ForeignKey(User, models.CASCADE, "user_loc_images")
+    is_deleted = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
 
 
 class Trip(models.Model):
@@ -118,7 +119,6 @@ class TripJoinRequest(models.Model):
 
 
 
-
 class Accomodations(models.Model):
     business_name = models.CharField(max_length=32)
     accomodation_type = models.IntegerField(choices=ACCOMODATION_TYPE)
@@ -126,6 +126,7 @@ class Accomodations(models.Model):
     price_per_night =  models.FloatField(default=0)
     check_in = models.DateTimeField(blank=True, null=True)
     check_out = models.DateTimeField(blank=True, null=True)
+    is_deleted = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     added_by = models.ForeignKey(User, models.CASCADE, "accomodations_added")
@@ -137,8 +138,11 @@ class Transportation(models.Model):
     mode = models.IntegerField(choices=TRANSPORTATION_MODE)
     company_name = models.CharField(max_length=32)
     price = models.FloatField()
-    origin = models.CharField(max_length=64)
-    destination = models.CharField(max_length=64)
+    origin = models.CharField(max_length=64, blank=True)
+    destination = models.CharField(max_length=64, blank=True)
+    departure_time = models.DateTimeField(blank=True, null=True)
+    arrival_time = models.DateTimeField(blank=True, null=True)
+    is_deleted = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     added_by = models.ForeignKey(User, models.CASCADE, "transportation_added")

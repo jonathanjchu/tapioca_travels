@@ -3,11 +3,11 @@
 {% block location_content %}
 
 <div class="row">
-    <div class="col">
+    <div class="col-2">
         <h2>{{ location.name }}</h2>
         <p>{{ location.info }}</p>
     </div>
-    <div class="col">
+    <div class="col-2">
         <a href="/travels/{{ trip.id }}/locations/{{ location.id }}/pictures/add">
             Add a picture
         </a>
@@ -58,6 +58,8 @@
 </div>
 {% endif %}
 <div class="row">
-    <a href="/travels/{{ trip.id}}/locations/{{ location.id }}/new">Add New Location</a>
+    <div class="col">
+        <a href="/travels/{{ trip.id}}/locations/{{ location.id }}/new">Add New Location</a>
+    </div>
 </div>
 {% endblock %}
