@@ -108,8 +108,8 @@ class Trip(models.Model):
 
 
 class TripJoinRequest(models.Model):
-    trip = models.ForeignKey(Trip, "requests_to_join")
-    requested_by = models.ForeignKey(User, "requesting_to_join")
+    trip = models.ForeignKey(Trip, models.CASCADE, "requests_to_join")
+    requested_by = models.ForeignKey(User, models.CASCADE, "requesting_to_join")
     is_pending = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
